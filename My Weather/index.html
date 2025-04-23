@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Weather</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="top">
+        <h1>
+          My Weather
+        </h1>
+        <img src="src/assets/logo.png" alt="My weather app logo">
+      </div>
+      <p>Powered by <em><a href="#">weather.com</a></em></p>
+    </header>
+    <main>
+      <section id="current_weather">
+        <div class="head">
+          <h2>Today's weather forcast is:</h2>
+          <button title="Add new place" class="toggler">+</button>
+        </div>
+        <div class="new_city">
+          <input type="text" name="city" id="city_name">
+          <input type="submit" name="city" id="city" value="Add" class="addCity" />
+        </div>
+        <div class="forcast">
+          <div class="current_day">
+            <p class="city_info"></p>
+            <div class="dateTime">
+              <p class="day"></p>
+              <p class="date"></p>
+              <p class="time"></p>
+            </div>
+          </div>
+          <div class="temperature_details">
+            <div class="updatedTemp">
+              <div class="tempRow">
+                <img alt="weather icon" class="icon">
+                <p class="temperature_info"><span class="currentTemp"></span>⁰ C</p>
+              </div>
+              <p class="feels">&nbsp; &nbsp; &nbsp; ~Feels like <span class="currentFeel"></span>⁰ C</p>
+            </div>
+            <div class="other-details">
+              <p id="weather_condition">Sky: <span class="weather_condition"></span></p>
+              <p id="humidity">Humidity: <span class="humidity"></span>%</p>
+              <p class="wind_speed">Wind Speed: <span class="wind"></span> km/hr</p>
+              <p class="wind_gusts">Pressure: <span class="pressure"></span> atm</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--     <section id="details">
+  <h4>Other Details:</h4>
+  <div class="extra-details"></div>
+</section> -->
+      <section id="updates">
+        <h3>Weather Map:</h3>
+        <iframe class="map-box" height="450" src="" frameborder="0"></iframe>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; Copyrights reserved at <a href="https://webdevavi96.netlify.app/">Avinash Chaurasiya</a></p>
+    </footer>
+  </div>
+  <script src="src/scripts/min.js" type="module" charset="utf-8"></script>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #575859;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 10px 0;
+}
+
+header .top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+header h1 {
+  font-size: 24px;
+  color: #D9D9D9;
+}
+
+header img {
+  width: 40px;
+  height: 40px;
+}
+
+.toggler{
+  cursor: pointer;
+}
+
+
+.new_city {
+  margin-top: 20px;
+  width: 100%;
+  gap: 10px;
+  display: none;
+}
+
+.new_city input[type="text"] {
+  border: none;
+  border-radius: 5px;
+  width: 85%;
+  padding: 10px 0;
+  outline: none;
+  font-size: 14px;
+  margin: 0;
+}
+
+.new_city input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.new_city input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.new_city input[type="submit"]:active {
+  background-color: #00408a;
+}
+
+
+/* Main Content */
+main {
+  margin-top: 20px;
+}
+
+/* Current Weather */
+#current_weather {
+  background: #008cff;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.head h2 {
+  margin: 0;
+}
+
+.head button {
+  background: white;
+  color: #008cff;
+  border: none;
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: ease-in .2s
+}
+
+/* .forcast {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-top: 10px;
+} */
+
+.dateTime {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.current_day {
+  display: grid;
+  grid-template-columns: repeat(2, 6fr);
+  box-shadow: inset 1px 1px 5px #FFFFFF;
+  border-radius: 5px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #292929E3;
+  color: #FFFFFF;
+}
+
+.current_day {
+  text-align: start;
+}
+
+.city_info {
+  font-size: 40px;
+  display: inline-block;
+  font-family: 'Times New Roman', Times, serif, sans-serif;
+}
+
+
+.temprature {
+  font-weight: bold;
+}
+
+.temperature_details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: #292929E3;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 5px #FFFFFF;
+}
+
+
+.updatedTemp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.tempRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  height: 70px;
+  width: 70px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.temperature_info {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0;
+  
+}
+
+.feels {
+  font-size: 14px;
+  margin-top: -8px;
+  text-align: end;
+  
+}
+
+.other-details {
+  padding: 10px;
+}
+
+.other-details p {
+  text-align: left;
+  font-weight: 600;
+}
+
+
+
+
+/* Updates */
+#updates {
+  background: #f9f9f9;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.map-box {
+  width: 100%;
+}
+
+/* Other Details */
+#details {
+  margin-top: 10px;
+  background: #e3e3e3;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #DFF0FF;
+}
+
+footer a {
+  text-decoration: none;
+  color: #008cff;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+@media screen and (max-width: 600px) {
+  .current_day{
+  grid-template-columns: repeat(1, auto);
+  }
+  
+  #city_name{
+    width: 78%;
+  }
+  
+  .temperature_info{
+    font-size: 35px;
+  }
+  
+  .temperature_details{
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .other-details{
+   display: grid;
+   grid-template-rows: repeat(2, auto);
+  }
+ .other-details p{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
