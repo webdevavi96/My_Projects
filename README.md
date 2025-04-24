@@ -184,7 +184,6 @@ A collection of mini-projects, including a card component and a counter, built t
 
 ## How to Run These Projects
 
-1. Clone the repository:
 
    ```bash
    git clone https://github.com/webdevavi96/My_Projects.git
@@ -195,7 +194,11 @@ A collection of mini-projects, including a card component and a counter, built t
 
    npm run dev
 
-   Contact
-    Feel free to reach out if you have any questions or feedback!
+```
+
+## Contact
+ Feel free to reach out if you have any questions or feedback!
         📧 Email: <p style="color:skyblue">avinashchaurasiya901@gmail.com </p>
         🌐 Portfolio: <a href="https://webdevavi96.netlify.app/" target="_blank">Portfolio Website</a>
+
+  
