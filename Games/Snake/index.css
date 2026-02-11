@@ -1,0 +1,101 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  position: fixed;
+}
+ 
+.container {
+  height: 100dvh;
+  width: 100dvw;
+  background-color: rgb(65, 64, 64);
+  font-size: 20px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+header {
+  padding: 5px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  color: black;
+  background-color: aquamarine;
+  font-weight: 800;
+  height: 30px;
+  margin-bottom: 5px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+main {
+  height: calc(100vh - 100px);
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+canvas {
+  height: calc(80vh - 150px);
+  width: 100%;
+  background: #000000;
+}
+
+.controlls {
+  height: 150px;
+  width: 100%;
+  display: none;
+}
+
+.left-right {
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+}
+
+.top button {
+  transform: rotate(90deg);
+}
+
+.bottom button {
+  transform: rotate(90deg);
+}
+
+button {
+  all: unset;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-weight: 800;
+  background: #000;
+}
+
+footer {
+  width: 100%;
+  margin-top: 5px;
+  color: #ccc;
+  font-size: 16px;
+  border-top: 1px solid black;
+  text-align: center;
+}
+
+footer a {
+  color: aqua;
+  font-style: italic;
+}
+
+@media screen and (max-width: 768px) {
+  .controlls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+  }
+}

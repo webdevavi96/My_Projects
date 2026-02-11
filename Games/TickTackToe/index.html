@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic - Tac - Toe</title>
+    <link rel="stylesheet" href="./index.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><button id="new-game">New Game</button></li>
+                    <li><button id="reset-game">Reset Game</button></li>
+                    <!-- <li><a href="/highscore">High Scores</a></li> -->
+                </ul>
+            </nav>
+
+            <div class="gameData">
+                <div class="bot">
+                    <span id="bot-won">Computer Won: 0</span>
+                    <span id="bot-lost"> Computer Lost: 0</span>
+                </div>
+                <div class="rounds">
+                    <span id="total-rounds">Total Rounds: 5</span>
+                    <span id="current-round"></span>
+                </div>
+                <div class="player">
+                    <span id="player-won">You Won: 0</span>
+                    <span id="player-lost">You Lost: 0</span>
+                </div>
+            </div>
+
+        </header>
+
+        <main>
+            <h1>Tic Tac Toe</h1>
+
+            <div class="game-menu">
+                <select name="options" id="options">
+                    <option value="">Choose Your Option</option>
+                    <option value="X">X</option>
+                    <option value="O">O</option>
+                </select>
+            </div>
+
+            <div id="game-box" class="hidden">
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+                <span class="elements"></span>
+            </div>
+        </main>
+
+        <footer>
+            <p>
+                All rights reserved at &copy; <a href="#">Avinash</a>
+            </p>
+        </footer>
+
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
