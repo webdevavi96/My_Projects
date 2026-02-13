@@ -5,62 +5,81 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const levels = {
-    0: "THE CODE IS HIDDEN IN PLAIN SIGHT",
-    1: "TRUST THE NUMBERS NOT THE NOISE",
-    2: "EVERY SYMBOL HAS A PURPOSE",
-    3: "DECODE BEFORE TIME RUNS OUT",
-    4: "PATTERNS REVEAL THE TRUTH",
-    5: "SHIFT YOUR THINKING",
-    6: "THE MATRIX NEVER LIES",
-    7: "FIND THE MISSING LETTER",
-    8: "LOGIC BEATS LUCK",
-    9: "THINK IN COORDINATES",
-    10: "ROWS AND COLUMNS HOLD THE KEY",
-    11: "BREAK THE HIDDEN CIPHER",
-    12: "EVERY MOVE MATTERS",
-    13: "SECRETS LIVE BETWEEN THE LINES",
-    14: "DEEP THINKING WINS",
-    15: "UNLOCK THE NEXT PATTERN",
-    16: "MASTER THE GRID",
-    17: "TIME IS YOUR ENEMY",
-    18: "PRECISION OVER SPEED",
-    19: "CRACK THE SEQUENCE",
-    20: "LET THE LETTERS GUIDE YOU",
-    21: "CHAOS HAS STRUCTURE",
-    22: "FOLLOW THE HIDDEN PATH",
-    23: "THE ANSWER IS SYSTEMATIC",
-    24: "READ BETWEEN COORDINATES",
-    25: "SOLVE THE UNKNOWN",
-    26: "INTELLIGENCE IS POWER",
-    27: "SEE WHAT OTHERS MISS",
-    28: "LOGIC CREATES ORDER",
-    29: "THE GRID REMEMBERS EVERYTHING",
-    30: "UNRAVEL THE CODE",
-    31: "STRATEGY BEATS GUESSWORK",
-    32: "CONTROL THE MATRIX",
-    33: "THINK TWO STEPS AHEAD",
-    34: "DECISIONS DEFINE VICTORY",
-    35: "PATTERN BEFORE ANSWER",
-    36: "CONCENTRATION IS KEY",
-    37: "BREAK THE LIMIT",
-    38: "STRUCTURE BRINGS CLARITY",
-    39: "CALCULATE EVERY MOVE",
-    40: "THE GRID IS WATCHING",
-    41: "DISCOVER THE SYSTEM",
-    42: "FIND ORDER IN CHAOS",
-    43: "SEQUENCE IS EVERYTHING",
-    44: "THINK LIKE A DECODER",
-    45: "THE PUZZLE EVOLVES",
-    46: "TRACE THE PATTERN",
-    47: "THE CODE AWAITS YOU",
-    48: "ANALYZE ADAPT ACHIEVE",
-    49: "YOU ARE CLOSE TO THE TRUTH",
+    0: "WELCOME",
+    1: "THE CODE IS HIDDEN IN PLAIN SIGHT",
+    2: "TRUST THE NUMBERS NOT THE NOISE",
+    3: "EVERY SYMBOL HAS A PURPOSE",
+    4: "DECODE BEFORE TIME RUNS OUT",
+    5: "PATTERNS REVEAL THE TRUTH",
+    6: "SHIFT YOUR THINKING",
+    7: "THE MATRIX NEVER LIES",
+    8: "FIND THE MISSING LETTER",
+    9: "LOGIC BEATS LUCK",
+    10: "THINK IN COORDINATES",
+    11: "ROWS AND COLUMNS HOLD THE KEY",
+    12: "BREAK THE HIDDEN CIPHER",
+    13: "EVERY MOVE MATTERS",
+    14: "SECRETS LIVE BETWEEN THE LINES",
+    15: "DEEP THINKING WINS",
+    16: "UNLOCK THE NEXT PATTERN",
+    17: "MASTER THE GRID",
+    18: "TIME IS YOUR ENEMY",
+    19: "PRECISION OVER SPEED",
+    20: "CRACK THE SEQUENCE",
+    21: "LET THE LETTERS GUIDE YOU",
+    22: "CHAOS HAS STRUCTURE",
+    23: "FOLLOW THE HIDDEN PATH",
+    24: "THE ANSWER IS SYSTEMATIC",
+    25: "READ BETWEEN COORDINATES",
+    26: "SOLVE THE UNKNOWN",
+    27: "INTELLIGENCE IS POWER",
+    28: "SEE WHAT OTHERS MISS",
+    29: "LOGIC CREATES ORDER",
+    30: "THE GRID REMEMBERS EVERYTHING",
+    31: "UNRAVEL THE CODE",
+    32: "STRATEGY BEATS GUESSWORK",
+    33: "CONTROL THE MATRIX",
+    34: "THINK TWO STEPS AHEAD",
+    35: "DECISIONS DEFINE VICTORY",
+    36: "PATTERN BEFORE ANSWER",
+    37: "CONCENTRATION IS KEY",
+    38: "BREAK THE LIMIT",
+    39: "STRUCTURE BRINGS CLARITY",
+    40: "CALCULATE EVERY MOVE",
+    41: "THE GRID IS WATCHING",
+    42: "DISCOVER THE SYSTEM",
+    43: "FIND ORDER IN CHAOS",
+    44: "SEQUENCE IS EVERYTHING",
+    45: "THINK LIKE A DECODER",
+    46: "THE PUZZLE EVOLVES",
+    47: "TRACE THE PATTERN",
+    48: "THE CODE AWAITS YOU",
+    49: "ANALYZE ADAPT ACHIEVE",
+    50: "YOU ARE CLOSE TO THE TRUTH",
   };
-  let level = 0;
+  
   const total_level = Object.keys(levels).length;
   const letters = "BCDFGHJKLMNPQRSTVWXY".split("");
   let gameOver = true;
   let timer = null;
+
+  let level = 0;
+
+  let user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    user = {
+      id: "user",
+      progress: [],
+    };
+  } else {
+    if (user.progress.length > 0) {
+      const highestLevel = Math.max(...user.progress.map((p) => p.level));
+
+      level = highestLevel + 1;
+      console.log(user)
+    }
+  }
 
   function shuffle(array) {
     const arr = [...array];
@@ -100,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inputBlock.innerHTML = "";
 
     const cleanMessage = message.replace(/\s/g, "");
-
     for (let i = 0; i < cleanMessage.length; i++) {
       const input = document.createElement("input");
       input.type = "text";
@@ -109,12 +127,31 @@ document.addEventListener("DOMContentLoaded", () => {
       input.classList.add("coord-input");
 
       input.addEventListener("input", (e) => {
-        // Allow only digits
         e.target.value = e.target.value.replace(/\D/g, "");
 
-        if (e.target.value.length === 3) {
-          const next = e.target.nextElementSibling;
-          if (next) next.focus();
+        const code = e.target.value;
+
+        if (code.length <= 1) {
+          e.target.style.color = "red";
+          return;
+        } else if (code.length > 3) e.target.style.color = "red";
+
+        const matchedLetter = document.querySelector(
+          `.letter[data-code="${parseInt(code)}"]`,
+        );
+
+        if (matchedLetter) {
+          const letter = highlightLetter(code);
+          console.log(letter.innerText);
+          if (letter && letter.innerText === cleanMessage[i]) {
+            e.target.style.color = "rgb(67 255 0)";
+            const next = e.target.nextElementSibling;
+            if (next) next.focus();
+
+            checkCompletion(cleanMessage);
+          } else {
+            e.target.style.color = "red";
+          }
         }
       });
 
@@ -126,6 +163,30 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       inputBlock.appendChild(input);
+    }
+  }
+
+  function checkCompletion(cleanMessage) {
+    const inputs = document.querySelectorAll(".coord-input");
+
+    let decoded = "";
+
+    inputs.forEach((input) => {
+      const code = input.value;
+
+      if (code.length < 2) return;
+
+      const matchedLetter = document.querySelector(
+        `.letter[data-code="${parseInt(code)}"]`,
+      );
+
+      if (matchedLetter) {
+        decoded += matchedLetter.innerText;
+      }
+    });
+
+    if (decoded === cleanMessage) {
+      gameClear();
     }
   }
 
@@ -157,7 +218,60 @@ document.addEventListener("DOMContentLoaded", () => {
   function endGame() {
     gameOver = true;
     clearInterval(timer);
-    document.querySelector(".message").innerText = "___ ___ ___ ___";
+
+    remainingTime = totalTime;
+    timerDisplay.textContent = "Time Left -- / --";
+
+    document.querySelector(".message").innerText = "____ ____ _____ _____";
+
+    document.querySelector(".input-block").innerHTML = "";
+  }
+
+  function gameClear() {
+    const inputs = document.querySelectorAll(".coord-input");
+
+    clearInterval(timer);
+
+    let recordTime = totalTime - remainingTime;
+    recordTime = formatTime(recordTime);
+
+    remainingTime = totalTime;
+    timerDisplay.textContent = "Time Left -- / --";
+
+    let encryptedMessage = "";
+
+    inputs.forEach((input) => {
+      encryptedMessage += `${input.value} `;
+    });
+
+    document.querySelector(".message").textContent = encryptedMessage;
+    document.querySelector(".input-block").innerHTML =
+      `<p style="color: rgb(67 255 0);">Level Completed!</p>`;
+
+    const newData = {
+      level: level,
+      original_message: levels[level],
+      encrypted_message: encryptedMessage.trim(),
+      time: recordTime,
+      completed_at: new Date().toISOString(),
+    };
+
+    const existingIndex = user.progress.findIndex((p) => p.level === level);
+
+    if (existingIndex !== -1) {
+      user.progress[existingIndex] = { ...newData };
+    } else {
+      user.progress.push(newData);
+    }
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    gameOver = true;
+    setTimeout(() => {
+      document.querySelector(".input-block").innerHTML = "";
+      document.querySelector(".message").textContent = "";
+      level += 1;
+    }, 3000);
   }
 
   function renderMessage() {
@@ -179,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <main>
    <section>
    <div class="info">
-   <p><span>Level</span>: ${level + 1}/${total_level}</p>
+   <p><span>Level</span>: <span class="level_info"></span></p>
    <p class="time-info"></p>
    </div>
 
@@ -207,10 +321,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelector("#startBTN").addEventListener("click", startGame);
   document.querySelector("#endBTN").addEventListener("click", endGame);
-
+  document.querySelector(".level_info").innerText=`${level} / ${total_level}`
+  
   let remainingTime = 180;
   const totalTime = 180;
-
+  
   const timerDisplay = document.querySelector(".time-info");
   timerDisplay.textContent = "Time Left -- / --";
 
@@ -244,8 +359,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const td = document.createElement("td");
 
       td.innerHTML = `
-        <div class="coord">${index}</div>
-        <div class="letter">${letter}</div>
+        <div class="coord" data-code="${index}">${index}</div>
+        <div class="letter" data-code="${index}">${letter}</div>
       `;
 
       td.dataset.code = index;
@@ -284,8 +399,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const uniqueNumber = matrixIndex * 25 + (rowIndex * 5 + colIndex);
 
           td.innerHTML = `
-            <div class="coord">${uniqueNumber.toString().padStart(2, "0")}</div>
-            <div class="letter">${cell}</div>
+            <div class="coord" data-code="${uniqueNumber}">${uniqueNumber.toString().padStart(2, "0")}</div>
+            <div class="letter" data-code="${uniqueNumber}">${cell}</div>
           `;
 
           td.dataset.code = uniqueNumber;
@@ -300,7 +415,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function highlightLetter(code) {
+    document
+      .querySelectorAll(".letter")
+      .forEach((el) => el.classList.remove("active"));
+
+    const matchedLetter = document.querySelector(
+      `.letter[data-code="${code}"]`,
+    );
+
+    if (matchedLetter) {
+      matchedLetter.classList.add("active");
+    }
+    return matchedLetter;
+  }
+
   renderMatrices();
   renderSpecialMatrix();
-  renderInputs(levels[level]);
 });

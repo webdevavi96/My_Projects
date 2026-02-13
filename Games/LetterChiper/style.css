@@ -129,7 +129,7 @@ body {
   }
 
   .message{
-    color: rgb(0, 255, 81);
+    color: rgb(0 250 221);
     font-size: 20px;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 500;
@@ -272,3 +272,24 @@ body {
     transform: scale(0.97);
   }
   
+
+  .letter.active {
+    background: gold;
+    color: black;
+    border-radius: 6px;
+  }
+  
+
+  .coord-input.invalid {
+    border-bottom: 3px solid red;
+    animation: shake 0.2s ease;
+  }
+  
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+  }
+
