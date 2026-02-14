@@ -3,6 +3,43 @@
 //   e.returnValue = "Save your progress before reload";
 // });
 
+const driver = window.driver.js.driver;
+const driverObj = driver();
+
+function startTutorial() {
+  const driverObj = driver({
+    showProgress: true,
+    steps: [
+      {
+        element: "#startBTN",
+        popover: {
+          title: "Start Game",
+          description: "Click here to begin the cipher challenge.",
+          position: "bottom",
+        },
+      },
+      {
+        element: ".hints",
+        popover: {
+          title: "Hints",
+          description: "Use coordinate numbers to decode letters.",
+          position: "top",
+        },
+      },
+      {
+        element: ".input-block",
+        popover: {
+          title: "Enter Codes",
+          description: "Type the correct coordinate here.",
+          position: "top",
+        },
+      },
+    ],
+  });
+
+  driverObj.drive();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const levels = {
     0: "WELCOME",
@@ -57,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     49: "ANALYZE ADAPT ACHIEVE",
     50: "YOU ARE CLOSE TO THE TRUTH",
   };
-  
+
   const total_level = Object.keys(levels).length;
   const letters = "BCDFGHJKLMNPQRSTVWXY".split("");
   let gameOver = true;
@@ -77,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const highestLevel = Math.max(...user.progress.map((p) => p.level));
 
       level = highestLevel + 1;
-      console.log(user)
     }
   }
 
@@ -142,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (matchedLetter) {
           const letter = highlightLetter(code);
-          console.log(letter.innerText);
           if (letter && letter.innerText === cleanMessage[i]) {
             e.target.style.color = "rgb(67 255 0)";
             const next = e.target.nextElementSibling;
@@ -190,31 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function startGame() {
-    if (!gameOver) return;
-
-    gameOver = false;
-
-    remainingTime = totalTime;
-    renderMessage();
-    renderInputs(levels[level]);
-    updateTimerUI();
-
-    if (timer) clearInterval(timer);
-
-    timer = setInterval(() => {
-      if (remainingTime <= 0) {
-        clearInterval(timer);
-        timerDisplay.textContent = "Time's Up!";
-        endGame();
-        return;
-      }
-
-      remainingTime--;
-      updateTimerUI();
-    }, 1000);
-  }
-
   function endGame() {
     gameOver = true;
     clearInterval(timer);
@@ -222,12 +232,19 @@ document.addEventListener("DOMContentLoaded", () => {
     remainingTime = totalTime;
     timerDisplay.textContent = "Time Left -- / --";
 
+    document.querySelector("#startBTN").style.display = "block";
+    document.querySelector("#endBTN").style.display = "none";
+
     document.querySelector(".message").innerText = "____ ____ _____ _____";
 
     document.querySelector(".input-block").innerHTML = "";
+
+    showSnackbar("Game Restarted!", "success");
   }
 
   function gameClear() {
+    showSnackbar("Level Completed!", "success");
+
     const inputs = document.querySelectorAll(".coord-input");
 
     clearInterval(timer);
@@ -265,13 +282,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     localStorage.setItem("user", JSON.stringify(user));
-
+    document.querySelector("#endBTN").style.display = "none";
+    document.querySelector("#startBTN").style.display = "block";
+    document.querySelector("#startBTN").innerText = "Next Level";
     gameOver = true;
     setTimeout(() => {
       document.querySelector(".input-block").innerHTML = "";
       document.querySelector(".message").textContent = "";
       level += 1;
-    }, 3000);
+    }, 2000);
+  }
+
+  function saveProgress() {
+    let recordTime = totalTime - remainingTime;
+    recordTime = formatTime(recordTime);
+
+    const newData = {
+      level: level,
+      original_message: levels[level],
+      encrypted_message: encryptedMessage.trim(),
+      time: recordTime,
+      completed_at: new Date().toISOString(),
+    };
+
+    const existingIndex = user.progress.findIndex((p) => p.level === level);
+
+    if (existingIndex !== -1) {
+      user.progress[existingIndex] = { ...newData };
+    } else {
+      user.progress.push(newData);
+    }
+
+    localStorage.setItem("user", JSON.stringify(user));
+    showSnackbar("Progress Saved!", "success");
   }
 
   function renderMessage() {
@@ -282,6 +325,27 @@ document.addEventListener("DOMContentLoaded", () => {
     messageContainer.innerText = `${newMessage}`;
   }
 
+  function showSnackbar(message, type = "default", duration = 3000) {
+    const bar = document.querySelector(".snakBar");
+
+    bar.textContent = message;
+
+    bar.className = "snakBar";
+    bar.classList.add("show");
+
+    if (type === "success") {
+      bar.classList.add("success");
+    }
+
+    if (type === "error") {
+      bar.classList.add("error");
+    }
+
+    setTimeout(() => {
+      bar.classList.remove("show");
+    }, duration);
+  }
+
   const root = document.querySelector("body");
   root.innerHTML = `
   <div class = "container">
@@ -289,6 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
   <h1>
   Encrypt the message!
   </h1>
+  <div class="snakBar"></div>
   </header>
     <main>
    <section>
@@ -299,8 +364,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     <div class="game-controls">
     <button id="startBTN">Start Game</button>
-    <button id="endBTN">Reset Game</button>
-    </div>
+    <button id="endBTN" style="display: none;" >Reset Game</button> 
+    <button id="saveBTN" style="display: none;" >Save Progress</button> 
+       </div>
     <div>
     <h2>Secret message is:</h2>
     <p class="message">____ ____ _____ _____</p>
@@ -309,23 +375,99 @@ document.addEventListener("DOMContentLoaded", () => {
 
    <section class="input-block"></section>
 
-    <section>
+    <section class="hints">
     <div>
     <h2>HINTS:</h2>
     </div>
     <div class="scroll"><div class="matrix"></div></div>
     </section>
     </main>
-  </div>
+    <footer class="footer">
+    <div class="information">
+      <h4>About Game</h4>
+      <p>Encrypt the message using matrix coordinates.</p>
+      <p>© 2025 <a class="link" href="https://webdevavi96.netlify.app/" target="_blank">Webdevavi96</a></p>
+    </div>
+  
+    <div class="ads">
+      <h4>Advertisement</h4>
+      <div class="ad-box">
+        Ad Space
+      </div>
+    </div>
+  </footer>
+    </div>
   `;
+
+  function startGame() {
+    if (!gameOver) return;
+
+    gameOver = false;
+
+    showSnackbar("Game Started!");
+
+    document.querySelector("#startBTN").style.display = "none";
+    document.querySelector("#endBTN").style.display = "block";
+    document.querySelector("#saveBTN").style.display = "block";
+
+    if (!localStorage.getItem("minidrive")) {
+      const miniDrive = driver({
+        showProgress: true,
+        steps: [
+          {
+            element: "#endBTN",
+            popover: {
+              title: "Restart Game",
+              description: "Click here to restrat the cipher challenge.",
+              position: "bottom",
+            },
+          },
+          {
+            element: "#saveBTN",
+            popover: {
+              title: "Save Progress",
+              description: "Click here to save your current progress.",
+              position: "bottom",
+            },
+          },
+        ],
+      });
+      miniDrive.drive();
+      localStorage.setItem("minidrive", "true");
+    }
+
+    remainingTime = totalTime;
+    renderMessage();
+    renderInputs(levels[level]);
+    updateTimerUI();
+
+    if (timer) clearInterval(timer);
+
+    timer = setInterval(() => {
+      if (remainingTime <= 0) {
+        clearInterval(timer);
+        timerDisplay.textContent = "00 / 180";
+        showSnackbar("Times Up!", "error");
+        endGame();
+        return;
+      }
+
+      remainingTime--;
+      document.querySelector(".level-info").innerText =
+        `${level / total_level}`;
+
+      updateTimerUI();
+    }, 1000);
+  }
 
   document.querySelector("#startBTN").addEventListener("click", startGame);
   document.querySelector("#endBTN").addEventListener("click", endGame);
-  document.querySelector(".level_info").innerText=`${level} / ${total_level}`
-  
+  document.querySelector("#saveBTN").addEventListener("click", saveProgress);
+  document.querySelector(".level_info").innerText = `${level} / ${total_level}`;
+
   let remainingTime = 180;
   const totalTime = 180;
-  
+
   const timerDisplay = document.querySelector(".time-info");
   timerDisplay.textContent = "Time Left -- / --";
 
@@ -424,12 +566,18 @@ document.addEventListener("DOMContentLoaded", () => {
       `.letter[data-code="${code}"]`,
     );
 
-    if (matchedLetter) {
-      matchedLetter.classList.add("active");
+    if (!matchedLetter) {
+      showSnackbar("Wrong Code", "error");
     }
+    matchedLetter.classList.add("active");
     return matchedLetter;
   }
 
   renderMatrices();
   renderSpecialMatrix();
+
+  if (!localStorage.getItem("tutorialSeen")) {
+    startTutorial();
+    localStorage.setItem("tutorialSeen", "true");
+  }
 });
