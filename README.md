@@ -15,6 +15,7 @@ Welcome to my portfolio of projects! 🚀 This repository showcases a variety of
 7. [BgChanger](#bgchanger)
 8. [ReactRouter](#reactrouter)
 9. [My App](#my-app)
+10. [My Games](#games)
 
 ---
 
@@ -182,8 +183,14 @@ A collection of mini-projects, including a card component and a counter, built t
 
 ---
 
-## How to Run These Projects
+## My Games
 
+**Description:**
+I have built some games using different tech stacks. You can play them locally.
+
+---
+
+## How to Run These Projects
 
    ```bash
    git clone https://github.com/webdevavi96/My_Projects.git
@@ -197,8 +204,7 @@ A collection of mini-projects, including a card component and a counter, built t
 ```
 
 ## Contact
+
  Feel free to reach out if you have any questions or feedback!
         📧 Email: <p style="color:skyblue">avinashchaurasiya901@gmail.com </p>
         🌐 Portfolio: <a href="https://webdevavi96.netlify.app/" target="_blank">Portfolio Website</a>
-
-  
